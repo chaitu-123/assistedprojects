@@ -1,0 +1,137 @@
+
+src/com/simplilearn/hiddenform/DashboadUUrlRewriteServlet.java
+==========================================================
+
+
+
+Package com.simplilearn.hiddenform;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class DashboadUUrlRewriteServlet
+ */
+@WebServlet("/dashboardHidden")
+public class DashboadUUrlRewriteServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public DashboadUUrlRewriteServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		PrintWriter out =  response.getWriter();
+		out.println("<html><body>");
+
+		String userId = request.getParameter("userId");
+		if(userId == null) {
+			out.println("No UserId was found in Hidden form <br/>");
+		}else {
+			out.println("Welcome "+ userId);
+		}
+
+		out.println("</body></html>");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+=======================================================================================
+
+src/com/simplilearn/hiddenform/LoginHiddenFormServlet.java
+==========================================================
+
+
+package com.simplilearn.hiddenform;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class LoginHiddenFormServlet
+ */
+@WebServlet("/loginHidden")
+public class LoginHiddenFormServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginHiddenFormServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		PrintWriter out = response.getWriter();
+
+		out.println("<html><body>");
+
+		String userId = request.getParameter("userId");
+
+		out.println("<form action='dashboardHidden' method='post' >");
+		out.println("<input type='hidden' name='userId' id='userId' value='"+userId+"' />");
+		out.println("</form>");
+
+		out.println("<script>document.forms[0].submit();</script>");
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+==============================================================================================================
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<form action="loginHidden" method="post">
+		<input type="hidden" name="userId" id="userId" value="admin" >
+		<button>Dashboard with hidden form field login</button>
+	</form>
+
+	<br/><br/>
+	<a href="dashboardHidden"> Dashboard without hidden form field</a>
+</body>
+</html> 

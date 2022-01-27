@@ -1,0 +1,133 @@
+
+src/com/simplilearn/cookie/DashboardCookieServlet.java
+==============================================
+
+package com.simplilearn.httpsession;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class DashboardHttpSession
+ */
+@WebServlet("/dashboardHttpSession")
+public class DashboardHttpSession extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public DashboardHttpSession() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		HttpSession session = request.getSession();
+		PrintWriter out = response.getWriter();
+		out.println("<html><body>");
+
+		String userId = (String) session.getAttribute("userId");
+		if (userId != null) {
+			out.println("Welcome " + userId);
+		} else {
+			out.println("No userId found in session, please login again");
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+
+=========================================================================================================================
+
+src/com/simplilearn/cookie/LoginCookieServlet.java
+-------------------------------------------------
+package com.simplilearn.httpsession;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class LoginHttpSessionServlet
+ */
+@WebServlet("/loginHttpSession")
+public class LoginHttpSessionServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginHttpSessionServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String userId = request.getParameter("userId");
+		
+		if(userId !=null) {
+			HttpSession session = request.getSession();
+			
+			session.setAttribute("userId", userId);
+			response.sendRedirect("dashboardHttpSession");
+			
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+================================================================================================================
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<a href="loginHttpSession?userId=dhruvik"> Dashboard with session
+		based login</a> <br/>
+	<a href="dashboardHttpSession">Dashboard without Session based
+		login</a>
+
+</body>
+</html> 
