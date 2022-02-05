@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Implicit objects example</h1>
+
+
+	<%
+		String office = request.getParameter("office");
+		if (office != null) {
+			response.sendRedirect("office.jsp");
+		} else {
+			out.print("Office not available");
+		}
+		// Out
+		out.println("This is out implicit object, which will print context to PrintWriter");
+		//Request 
+		out.println("<br/>" + request.getServerName());
+		out.println("<br/>" + request.getServerPort());
+		
+		
+		out.println("<p> Page name is:"+page.toString());
+		
+		
+		// Page context
+		pageContext.setAttribute("userId", "UI2022", PageContext.APPLICATION_SCOPE);
+		pageContext.setAttribute("UserName", "Satish", PageContext.REQUEST_SCOPE);
+		
+		session.setAttribute("UserName", "Satish");
+	%>
+
+	<a href="implicit-objects.jsp?office=test"> Click here to redirect office</a>
+
+
+</body>
+</html> 
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> THis is office page</h1>
+
+
+
+<%= pageContext.getAttribute("userId", PageContext.APPLICATION_SCOPE) %>
+<%= session.getAttribute("UserName") %>
+
+</body>
+</html> 
+
+
+
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Declaration tag example</h1>
+
+	<%!int rank = 10;
+	double price = 988.07;
+	String name = "Satish";
+	private int showRank() {
+		return rank;
+	}%>
+
+	The rank value is :
+	<%=rank%>
+	<br /> The showRank method value is:
+	<%=showRank()%>
+	<br />
+	<%= TestUtil.showMessage("Simpliearn") %>
+
+
+</body>
+</html> 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> Expression tags example</h1>
+
+<%= new Date() %>
+
+<br/>
+100 Miltiplied by 47 is : <%= 100*47 %>
+<br/>
+75 is less than 4? : <%= 75<47 %>
+<br/>
+
+Converted to upper case string: <%= new String("Learning in simplilearn").toUpperCase() %>
+
+
+
+
+</body>
+</html> 
+
+
+ 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>This is scriptlet tag demo</h1>
+
+	<%
+		int age = 18;
+		if (age >= 18) {
+			out.println("<p> Your age is valid </p>");
+		} else {
+			out.println("<p> Your age is invalid </p>");
+		}
+	%>
+</body>
+</html> 
+ 
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> Welcome to Simplilearn</h1>
+
+
+<nav>
+	<a href="index.jsp"> Home </a>
+	<a href="login.jsp"> Login </a>
+	<a href="registration.jsp"> Registration </a>
+	<a href="logout.jsp"> Logout </a>
+</nav>
+
+</body>
+</html> 
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<%@ include file="header.jsp" %>
+
+	<p> your content starts here</p>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+package com.simpli.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mysql.cj.protocol.Resultset;
+import com.simplilearn.util.DBConnection;
+
+/**
+ * Servlet implementation class ListDataServlet
+ */
+@WebServlet("/addProductSP")
+public class AddDataSPServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AddDataSPServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String url = "jdbc:mysql://localhost:3306/ecommerce";
+		String userName = "root";
+		String password = "password";
+
+		PrintWriter out = response.getWriter();
+		out.println("<html> <body>");
+		try {
+			DBConnection dbConnection = new DBConnection(url, userName, password);
+
+			Connection connection = dbConnection.getConnection();
+			/*
+			connection.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_FORWARD_ONLY);*/
+
+			CallableStatement stmt = connection.prepareCall("{call add_product_25012022(?,?)}");
+
+			stmt.setString(1, "Test_Nishchith_From SP");
+			stmt.setBigDecimal(2, new BigDecimal(15000));
+
+			stmt.executeUpdate();
+
+			out.println("Data inserted successfully");
+			stmt.close();
+			out.println("</body></html>");
+			dbConnection.closeConnection();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+------------------------------------------------------------------------------------
+
+package com.simpli.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.simplilearn.util.DBConnection;
+
+/**
+ * Servlet implementation class ListDataServlet
+ */
+@WebServlet("/addProduct")
+public class AddDataServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AddDataServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String url = "jdbc:mysql://localhost:3306/ecommerce";
+		String userName = "root";
+		String password = "password";
+
+		PrintWriter out = response.getWriter();
+		out.println("<html> <body>");
+		try {
+			DBConnection dbConnection = new DBConnection(url, userName, password);
+
+			Connection connection = dbConnection.getConnection();
+
+			PreparedStatement stmt = connection.prepareStatement("insert into eproduct_25012022 (name,price) values (? , ?)");
+
+			stmt.setString(1, "Test_Nishchith");
+			stmt.setBigDecimal(2, new BigDecimal(15000));
+
+			stmt.executeUpdate();
+
+			out.println("Data inserted successfully");
+			stmt.close();
+			out.println("</body></html>");
+			dbConnection.closeConnection();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+-------------------------------------------------------------------------
+package com.simpli.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.simplilearn.util.DBConnection;
+
+/**
+ * Servlet implementation class ListDataServlet
+ */
+@WebServlet("/listProducts")
+public class ListDataServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ListDataServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String url = "jdbc:mysql://localhost:3306/ecommerce";
+		String userName = "root";
+		String password = "password";
+
+		PrintWriter out = response.getWriter();
+		out.println("<html> <body>");
+		try {
+			DBConnection dbConnection = new DBConnection(url, userName, password);
+
+			Connection connection = dbConnection.getConnection();
+
+			Statement stmt = connection.createStatement();
+
+
+			ResultSet rs = stmt.executeQuery("select * from eproduct_25012022");
+
+			while(rs.next()) {
+				String productName = rs.getString("name");
+				BigDecimal price = rs.getBigDecimal("price");
+				Date dateAdded = rs.getDate("date_added");
+
+				out.println(productName+" "+price+" "+dateAdded +"<br/>");
+			}
+
+			stmt.close();
+			out.println("</body></html>");
+			dbConnection.closeConnection();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+ ------------------------------------------------------
+package com.simpli.util;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBConnection {
+
+	private Connection connection;
+
+	//JDBC Connection URL : Containing information about host and port and database name
+	public DBConnection(String dbUrl, String username, String password) throws ClassNotFoundException, SQLException {
+
+		//Step 1: Register driver
+		Class.forName("com.mysql.jdbc.Driver");
+
+		//Step 2: Get connection object
+		connection  = DriverManager.getConnection(dbUrl, username, password);
+
+	} 
+
+
+	public Connection getConnection() {
+		return this.connection;
+	}
+
+	public void closeConnection() throws SQLException {
+		if(this.connection!=null) {
+			this.connection.close();
+		}
+	}
+}
